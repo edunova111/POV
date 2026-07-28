@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baile Real - 80 Anos Rainha Ilda</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Baile Real - 80 Anos Rainha Ilda</h1>
+        <p>Envie sua foto para o nosso álbum digital!</p>
+
+        <form id="uploadForm">
+            <label for="nomeConvidado">Seu Nome:</label>
+            <input type="text" id="nomeConvidado" required placeholder="Digite seu nome completo">
+
+            <label for="fotoInput">Escolha a Foto:</label>
+            <input type="file" id="fotoInput" accept="image/jpeg, image/png" required>
+
+            <button type="submit" id="btnEnviar">Enviar Foto</button>
+        </form>
+
+        <div id="status" class="hidden"></div>
+
+        <div class="link-album">
+            <a href="#" id="linkAlbum" target="_blank" class="hidden">Ver Álbum de Fotos no Drive</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
