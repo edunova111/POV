@@ -1,33 +1,249 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Baile Real - 80 Anos Rainha Ilda</title>
-    <link rel="stylesheet" href="style.css">
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <?!= include('CSS'); ?>
 </head>
 <body>
-    <div class="container">
-        <h1>Baile Real - 80 Anos Rainha Ilda</h1>
-        <p>Envie sua foto para o nosso álbum digital!</p>
 
-        <form id="uploadForm">
-            <label for="nomeConvidado">Seu Nome:</label>
-            <input type="text" id="nomeConvidado" required placeholder="Digite seu nome completo">
-
-            <label for="fotoInput">Escolha a Foto:</label>
-            <input type="file" id="fotoInput" accept="image/jpeg, image/png" required>
-
-            <button type="submit" id="btnEnviar">Enviar Foto</button>
-        </form>
-
-        <div id="status" class="hidden"></div>
-
-        <div class="link-album">
-            <a href="#" id="linkAlbum" target="_blank" class="hidden">Ver Álbum de Fotos no Drive</a>
-        </div>
+  <div class="camera-body">
+    <div class="camera-flash-bar">
+      <div class="viewfinder-lens"></div>
+      <div class="flash-bulb"><i class="fa-solid fa-bolt"></i></div>
     </div>
 
-    <script src="script.js"></script>
+    <div class="card">
+      <div class="badge-container">
+        <i class="fa-solid fa-crown crown-icon"></i>
+      </div>
+
+      <h1>Baile Real</h1>
+      <h2>80 Anos Rainha Ilda</h2>
+      
+      <p class="subtitle">
+        Sua câmera descartável digital da festa. Tire fotos, divirta-se e eternize este momento conosco!
+      </p>
+
+      <div class="input-group">
+        <label for="nome"><i class="fa-solid fa-user-pen"></i> Identifique-se (Opcional)</label>
+        <input
+          type="text"
+          id="nome"
+          placeholder="Digite seu nome ou da sua família"
+          autocomplete="name"
+          autocorrect="off"
+          spellcheck="false"
+        >
+      </div>
+
+      <div id="preview-container" style="display: none;">
+        <img id="preview" alt="Prévia da foto">
+      </div>
+
+      <div class="actions-container">
+        <label class="btn-style btn-camera">
+          <i class="fa-solid fa-camera-retro"></i>
+          Tirar Foto / Câmera
+          <input
+            type="file"
+            id="input-camera"
+            accept="image/*"
+            capture="environment"
+            onchange="processarFoto(this.files[0])"
+          >
+        </label>
+
+        <label class="btn-style btn-gallery">
+          <i class="fa-solid fa-images"></i>
+          Escolher da Galeria
+          <input
+            type="file"
+            id="input-galeria"
+            accept="image/*"
+            onchange="processarFoto(this.files[0])"
+          >
+        </label>
+
+        <button class="btn-style btn-view-album" onclick="abrirAlbum()">
+          <i class="fa-solid fa-photo-film"></i>
+          Ver Álbum de Fotos
+        </button>
+      </div>
+
+      <div class="footer-note">
+        <p>✨ Cada clique vai direto para o álbum da Rainha Ilda ✨</p>
+      </div>
+
+      <div id="status"></div>
+    </div>
+  </div>
+
+  <script>
+    function processarFoto(file) {
+      if (!file) return;
+
+      if (file.type && file.type.indexOf('image/') !== 0) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Arquivo inválido',
+          text: 'Por favor, selecione apenas imagens.'
+        });
+        return;
+      }
+
+      var nome = document.getElementById('nome').value.trim();
+      mostrarPreview(file);
+
+      Swal.fire({
+        title: 'Revelando a foto...',
+        text: 'Enviando para o álbum real',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: function() {
+          Swal.showLoading();
+        }
+      });
+
+      comprimirImagem(file).then(function(dataUrl) {
+        google.script.run
+          .withSuccessHandler(function(res) {
+            Swal.close();
+
+            if (!res.sucesso) {
+              Swal.fire({
+                icon: 'error',
+                title: 'Erro',
+                text: res.msg || 'Não foi possível enviar a foto.'
+              });
+              return;
+            }
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Foto revelada com sucesso! 👑',
+              text: 'Deseja tirar outra foto?',
+              showCancelButton: true,
+              confirmButtonText: 'Tirar outra',
+              cancelButtonText: 'Ver Álbum / Sair',
+              confirmButtonColor: '#b8860b',
+              cancelButtonColor: '#4a5568'
+            }).then(function(resultado) {
+              if (resultado.isConfirmed) {
+                limparCampos(false);
+              } else {
+                limparCampos(true);
+                abrirAlbum();
+              }
+            });
+          })
+          .withFailureHandler(function() {
+            Swal.close();
+            Swal.fire({
+              icon: 'error',
+              title: 'Falha na comunicação',
+              text: 'Ocorreu um erro no servidor. Tente novamente.'
+            });
+          })
+          .salvarFoto(
+            dataUrl.split(',')[1],
+            file.name,
+            nome
+          );
+
+      }).catch(function(erro) {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro',
+          text: 'Não foi possível processar a imagem.'
+        });
+        console.error(erro);
+      });
+    }
+
+    function abrirAlbum() {
+      google.script.run
+        .withSuccessHandler(function(res) {
+          if (!res.sucesso) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erro',
+              text: 'Não foi possível abrir o álbum.'
+            });
+            return;
+          }
+          window.open(res.url, '_blank');
+        })
+        .withFailureHandler(function() {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro',
+            text: 'Falha ao acessar o álbum.'
+          });
+        })
+        .obterLinkPastaRaiz();
+    }
+
+    function mostrarPreview(file) {
+      var preview = document.getElementById('preview');
+      var container = document.getElementById('preview-container');
+      var urlCreator = window.URL || window.webkitURL;
+      preview.src = urlCreator.createObjectURL(file);
+      container.style.display = 'block';
+    }
+
+    function limparCampos(limparNome) {
+      document.getElementById('input-galeria').value = '';
+      document.getElementById('input-camera').value = '';
+      document.getElementById('preview-container').style.display = 'none';
+      document.getElementById('preview').src = '';
+      document.getElementById('status').textContent = '';
+
+      if (limparNome) {
+        document.getElementById('nome').value = '';
+      }
+    }
+
+    function comprimirImagem(file) {
+      return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          var img = new Image();
+          img.onload = function() {
+            var canvas = document.createElement('canvas');
+            var max = 1200;
+            var largura = img.width;
+            var altura = img.height;
+
+            if (largura > altura ? largura > max : altura > max) {
+              var proporcao = largura > altura ? max / largura : max / altura;
+              largura *= proporcao;
+              altura *= proporcao;
+            }
+
+            canvas.width = largura;
+            canvas.height = altura;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, largura, altura);
+            resolve(canvas.toDataURL('image/jpeg', 0.8));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+  </script>
 </body>
 </html>
