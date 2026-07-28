@@ -7,23 +7,32 @@
   --border-radius: 16px;
 }
 
-body {
-  margin: 0;
-  padding: 15px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
-  color: var(--text-main);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
+* {
   box-sizing: border-box;
 }
 
-/* Estrutura imitando o corpo de uma câmera moderna / cartão digital */
+body {
+  margin: 0;
+  padding: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+  color: var(--text-main);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  min-height: 100vh;
+}
+
+/* Estrutura da câmera ajustada para evitar sobreposições */
 .camera-body {
   width: 100%;
-  max-width: 440px;
+  max-width: 420px;
   background: var(--card-bg);
   border-radius: var(--border-radius);
   box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 2px rgba(197, 160, 89, 0.3);
@@ -31,13 +40,19 @@ body {
   position: relative;
 }
 
-/* Barra superior simulando visor/flash da câmera */
+/* Barra superior da câmera */
 .camera-flash-bar {
   background: #1e1e1e;
-  padding: 10px 20px;
+  padding: 12px 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   border-bottom: 2px solid var(--primary-gold);
 }
 
@@ -47,7 +62,6 @@ body {
   background: #000;
   border-radius: 50%;
   border: 2px solid #555;
-  box-shadow: inset 0 0 4px #0ff;
 }
 
 .flash-bulb {
@@ -56,52 +70,51 @@ body {
 }
 
 .card {
-  padding: 30px 24px;
+  padding: 24px 20px;
   text-align: center;
 }
 
 .badge-container {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .crown-icon {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   color: var(--primary-gold);
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
 }
 
 h1 {
   font-family: 'Cinzel', serif;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   color: #1a1a1a;
-  margin: 5px 0 0 0;
+  margin: 4px 0 0 0;
   letter-spacing: 1px;
 }
 
 h2 {
   font-family: 'Cinzel', serif;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--primary-gold);
-  margin: 5px 0 15px 0;
+  margin: 4px 0 12px 0;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 .subtitle {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--text-muted);
-  line-height: 1.5;
-  margin-bottom: 25px;
+  line-height: 1.4;
+  margin-bottom: 20px;
 }
 
 .input-group {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .input-group label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #4b5563;
   margin-bottom: 6px;
@@ -109,12 +122,10 @@ h2 {
 
 input[type="text"] {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 14px;
   border: 1.5px solid #e5e7eb;
   border-radius: 10px;
-  font-size: 1rem;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
+  font-size: 16px; /* Evita zoom automático indesejado no iOS/Android antigo */
   background-color: #f9fafb;
 }
 
@@ -122,61 +133,66 @@ input[type="text"]:focus {
   border-color: var(--primary-gold);
   outline: none;
   background-color: #fff;
-  box-shadow: 0 0 0 3px rgba(197, 160, 89, 0.15);
 }
 
-/* Área de Pré-visualização da Foto Escolhida */
+/* Área de Pré-visualização */
 #preview-container {
-  margin-bottom: 20px;
-  border-radius: 12px;
+  margin-bottom: 16px;
+  border-radius: 10px;
   overflow: hidden;
   border: 2px dashed var(--primary-gold);
   background: #fdfbf7;
-  padding: 6px;
+  padding: 4px;
 }
 
 #preview {
   width: 100%;
-  max-height: 220px;
-  object-fit: cover;
-  border-radius: 8px;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 6px;
   display: block;
 }
 
-/* Botões Estilizados */
+/* Botões Estilizados e Blindados contra quebras */
 .actions-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 10px;
 }
 
 .btn-style {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   gap: 10px;
   width: 100%;
-  padding: 14px 20px;
+  padding: 14px 16px;
   border-radius: 10px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
-  box-sizing: border-box;
   text-decoration: none;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  -webkit-appearance: none;
 }
 
-.btn-style:active {
-  transform: scale(0.98);
-}
-
-/* Esconde o input file nativo para usar o label customizado */
 .btn-style input[type="file"] {
   display: none;
 }
 
 .btn-camera {
+  background: -webkit-gradient(linear, left top, right bottom, from(#2b2b2b), to(#1a1a1a));
   background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 100%);
   color: #ffffff;
   border: 1px solid #444;
@@ -189,13 +205,14 @@ input[type="text"]:focus {
 }
 
 .btn-view-album {
+  background: -webkit-gradient(linear, left top, right bottom, from(#c5a059), to(#a3813e));
   background: linear-gradient(135deg, #c5a059 0%, #a3813e 100%);
   color: #ffffff;
   box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
 }
 
 .footer-note {
-  margin-top: 25px;
-  font-size: 0.8rem;
+  margin-top: 20px;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }

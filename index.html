@@ -3,7 +3,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,9 @@
   
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <?!= include('CSS'); ?>
+  <style>
+    <?!= include('CSS'); ?>
+  </style>
 </head>
 <body>
 
@@ -40,9 +42,6 @@
           type="text"
           id="nome"
           placeholder="Digite seu nome ou da sua família"
-          autocomplete="name"
-          autocorrect="off"
-          spellcheck="false"
         >
       </div>
 
@@ -59,7 +58,7 @@
             id="input-camera"
             accept="image/*"
             capture="environment"
-            onchange="processarFoto(this.files[0])"
+            onchange="processarFoto(this)"
           >
         </label>
 
@@ -70,11 +69,11 @@
             type="file"
             id="input-galeria"
             accept="image/*"
-            onchange="processarFoto(this.files[0])"
+            onchange="processarFoto(this)"
           >
         </label>
 
-        <button class="btn-style btn-view-album" onclick="abrirAlbum()">
+        <button type="button" class="btn-style btn-view-album" onclick="abrirAlbum()">
           <i class="fa-solid fa-photo-film"></i>
           Ver Álbum de Fotos
         </button>
@@ -83,14 +82,13 @@
       <div class="footer-note">
         <p>✨ Cada clique vai direto para o álbum da Rainha Ilda ✨</p>
       </div>
-
-      <div id="status"></div>
     </div>
   </div>
 
   <script>
-    function processarFoto(file) {
-      if (!file) return;
+    function processarFoto(input) {
+      if (!input.files || !input.files[0]) return;
+      var file = input.files[0];
 
       if (file.type && file.type.indexOf('image/') !== 0) {
         Swal.fire({
@@ -110,31 +108,37 @@
         allowOutsideClick: false,
         allowEscapeKey: false,
         didOpen: function() {
-          Swal.showLoading();
+          if (Swal.showLoading) Swal.showLoading();
         }
       });
 
-      comprimirImagem(file).then(function(dataUrl) {
+      comprimirImagem(file, function(dataUrl) {
+        if (!dataUrl) {
+          Swal.close();
+          Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível ler a imagem.' });
+          return;
+        }
+
         google.script.run
           .withSuccessHandler(function(res) {
             Swal.close();
 
-            if (!res.sucesso) {
+            if (!res || !res.sucesso) {
               Swal.fire({
                 icon: 'error',
                 title: 'Erro',
-                text: res.msg || 'Não foi possível enviar a foto.'
+                text: (res && res.msg) ? res.msg : 'Não foi possível enviar a foto.'
               });
               return;
             }
 
             Swal.fire({
               icon: 'success',
-              title: 'Foto revelada com sucesso! 👑',
+              title: 'Foto revelada! 👑',
               text: 'Deseja tirar outra foto?',
               showCancelButton: true,
               confirmButtonText: 'Tirar outra',
-              cancelButtonText: 'Ver Álbum / Sair',
+              cancelButtonText: 'Ver Álbum',
               confirmButtonColor: '#b8860b',
               cancelButtonColor: '#4a5568'
             }).then(function(resultado) {
@@ -156,25 +160,16 @@
           })
           .salvarFoto(
             dataUrl.split(',')[1],
-            file.name,
+            file.name || 'foto.jpg',
             nome
           );
-
-      }).catch(function(erro) {
-        Swal.close();
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro',
-          text: 'Não foi possível processar a imagem.'
-        });
-        console.error(erro);
       });
     }
 
     function abrirAlbum() {
       google.script.run
         .withSuccessHandler(function(res) {
-          if (!res.sucesso) {
+          if (!res || !res.sucesso) {
             Swal.fire({
               icon: 'error',
               title: 'Erro',
@@ -198,51 +193,70 @@
       var preview = document.getElementById('preview');
       var container = document.getElementById('preview-container');
       var urlCreator = window.URL || window.webkitURL;
-      preview.src = urlCreator.createObjectURL(file);
-      container.style.display = 'block';
+      if (urlCreator && urlCreator.createObjectURL) {
+        preview.src = urlCreator.createObjectURL(file);
+        container.style.display = 'block';
+      }
     }
 
     function limparCampos(limparNome) {
-      document.getElementById('input-galeria').value = '';
-      document.getElementById('input-camera').value = '';
+      var galeria = document.getElementById('input-galeria');
+      var camera = document.getElementById('input-camera');
+      if(galeria) galeria.value = '';
+      if(camera) camera.value = '';
+      
       document.getElementById('preview-container').style.display = 'none';
       document.getElementById('preview').src = '';
-      document.getElementById('status').textContent = '';
 
       if (limparNome) {
         document.getElementById('nome').value = '';
       }
     }
 
-    function comprimirImagem(file) {
-      return new Promise(function(resolve, reject) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-          var img = new Image();
-          img.onload = function() {
-            var canvas = document.createElement('canvas');
-            var max = 1200;
-            var largura = img.width;
-            var altura = img.height;
+    // Função compatível com ES5 puro para rodar em navegadores antigos de Android (J7 Prime, etc.)
+    function comprimirImagem(file, callback) {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var img = new Image();
+        img.onload = function() {
+          var canvas = document.createElement('canvas');
+          var max = 1000; // Reduzido levemente para evitar travamentos em aparelhos com pouca RAM
+          var largura = img.width;
+          var altura = img.height;
 
-            if (largura > altura ? largura > max : altura > max) {
-              var proporcao = largura > altura ? max / largura : max / altura;
-              largura *= proporcao;
-              altura *= proporcao;
+          if (largura > altura) {
+            if (largura > max) {
+              altura *= max / largura;
+              largura = max;
             }
+          } else {
+            if (altura > max) {
+              largura *= max / altura;
+              altura = max;
+            }
+          }
 
-            canvas.width = largura;
-            canvas.height = altura;
-            var ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, largura, altura);
-            resolve(canvas.toDataURL('image/jpeg', 0.8));
-          };
-          img.onerror = reject;
-          img.src = e.target.result;
+          canvas.width = largura;
+          canvas.height = altura;
+          var ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, largura, altura);
+          
+          try {
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.75);
+            callback(dataUrl);
+          } catch (err) {
+            callback(null);
+          }
         };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
+        img.onerror = function() {
+          callback(null);
+        };
+        img.src = e.target.result;
+      };
+      reader.onerror = function() {
+        callback(null);
+      };
+      reader.readAsDataURL(file);
     }
   </script>
 </body>
