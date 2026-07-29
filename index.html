@@ -7,6 +7,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <title>Baile Real - 80 Anos Rainha Ilda</title>
 
 
@@ -24,6 +25,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </head>
 
@@ -46,6 +48,7 @@
 <div class="welcome-content">
 
 
+
 <div class="logo-container">
 
 
@@ -53,9 +56,9 @@
 
 src="brasao.png"
 
-class="logo-evento"
+alt="Brasão Baile Real"
 
-alt="Brasão do evento"
+class="logo-evento"
 
 
 >
@@ -74,6 +77,7 @@ alt="Brasão do evento"
 Baile Real
 
 </h1>
+
 
 
 <h2>
@@ -98,6 +102,7 @@ Ajude a guardar as melhores lembranças desta noite através do seu olhar.
 
 
 
+
 <button
 
 id="entrar-btn"
@@ -108,10 +113,12 @@ class="btn-style btn-view-album"
 
 <i class="fa-solid fa-camera"></i>
 
+
 Entrar na Festa
 
 
 </button>
+
 
 
 
@@ -131,7 +138,6 @@ Entrar na Festa
 <!-- =========================
      TELA DA CÂMERA
 ========================= -->
-
 
 
 <section id="camera-screen" style="display:none;">
@@ -163,6 +169,8 @@ Entrar na Festa
 
 
 
+
+
 <h1>
 
 Baile Real
@@ -176,6 +184,7 @@ Baile Real
 80 Anos Rainha Ilda
 
 </h2>
+
 
 
 
@@ -196,11 +205,11 @@ Baile Real
 
 1. Tire uma foto ou escolha uma imagem da galeria.<br><br>
 
-2. Confira a prévia antes do envio.<br><br>
+2. Confira a pré-visualização antes do envio.<br><br>
 
 3. O nome é opcional: você pode se identificar ou enviar anonimamente.<br><br>
 
-4. Sua foto será adicionada ao álbum da festa.
+4. Confirme o envio para adicionar sua foto ao álbum da festa.
 
 
 </p>
@@ -232,6 +241,7 @@ Nome (opcional)
 
 
 
+
 <input
 
 id="nome"
@@ -239,7 +249,6 @@ id="nome"
 type="text"
 
 placeholder="Digite seu nome ou família"
-
 
 >
 
@@ -254,20 +263,94 @@ placeholder="Digite seu nome ou família"
 
 
 
+<!-- PREVISUALIZAÇÃO -->
+
+
 <div id="preview-container" style="display:none;">
 
 
 <p class="preview-title">
 
-Pré-visualização
+Pré-visualização da foto
 
 </p>
 
 
-<img id="preview">
+
+<img
+
+id="preview"
+
+alt="Prévia da foto"
+
+
+>
+
+
+
+
+
+<div class="preview-actions">
+
+
+
+
+
+<button
+
+id="btnEnviarFoto"
+
+class="btn-style btn-view-album"
+
+type="button"
+
+>
+
+
+<i class="fa-solid fa-cloud-arrow-up"></i>
+
+
+Enviar esta foto
+
+
+</button>
+
+
+
+
+
+
+
+<button
+
+id="btnDescartarFoto"
+
+class="btn-style btn-discard"
+
+type="button"
+
+>
+
+
+<i class="fa-solid fa-trash"></i>
+
+
+Descartar e tirar outra
+
+
+</button>
+
+
+
 
 
 </div>
+
+
+
+</div>
+
+
 
 
 
@@ -291,6 +374,7 @@ Tirar Foto
 
 
 
+
 <input
 
 id="input-camera"
@@ -305,7 +389,9 @@ capture="environment"
 >
 
 
+
 </label>
+
 
 
 
@@ -322,6 +408,7 @@ Escolher da Galeria
 
 
 
+
 <input
 
 id="input-galeria"
@@ -334,7 +421,9 @@ accept="image/*"
 >
 
 
+
 </label>
+
 
 
 
@@ -349,6 +438,7 @@ id="btnAlbum"
 
 class="btn-style btn-view-album"
 
+type="button"
 
 >
 
@@ -375,13 +465,16 @@ Ver Álbum
 
 
 
+
 <div class="footer-note">
 
 
-✨ Cada foto ajuda a contar a história desta noite ✨
+✨ Cada foto ajuda a contar a história desta noite especial ✨
 
 
 </div>
+
+
 
 
 
@@ -396,8 +489,9 @@ Ver Álbum
 
 
 
-
 </div>
+
+
 
 
 

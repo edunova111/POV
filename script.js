@@ -1,32 +1,37 @@
 const URL_API = "https://script.google.com/macros/s/AKfycbz3Z_79FI4l4HTnvKIhWzqXcDwIfWSCSqkDj1nlJNbRXC4WZME5xDjKTvUdwT4Ube4Vlw/exec";
 
 
+// ==========================
 // ELEMENTOS
+// ==========================
 
 const welcomeScreen = document.getElementById("welcome-screen");
-
 const cameraScreen = document.getElementById("camera-screen");
 
 const entrarBtn = document.getElementById("entrar-btn");
 
-
 const nomeInput = document.getElementById("nome");
 
 const inputCamera = document.getElementById("input-camera");
-
 const inputGaleria = document.getElementById("input-galeria");
 
+const previewContainer = document.getElementById("preview-container");
 const preview = document.getElementById("preview");
 
-const previewContainer = document.getElementById("preview-container");
+const btnEnviarFoto = document.getElementById("btnEnviarFoto");
+const btnDescartarFoto = document.getElementById("btnDescartarFoto");
 
 const btnAlbum = document.getElementById("btnAlbum");
 
 
+// Guarda a foto escolhida antes do envio
+let arquivoSelecionado = null;
 
 
 
+// ==========================
 // ENTRAR NA FESTA
+// ==========================
 
 entrarBtn.addEventListener("click", function(){
 
@@ -39,32 +44,27 @@ entrarBtn.addEventListener("click", function(){
 
 
 
-
-
-
-// ESCOLHA DA CÂMERA
+// ==========================
+// ESCOLHER FOTO
+// ==========================
 
 inputCamera.addEventListener("change", function(){
 
     if(this.files.length){
 
-        processarFoto(this.files[0]);
+        selecionarFoto(this.files[0]);
 
     }
 
 });
 
 
-
-
-
-// ESCOLHA DA GALERIA
 
 inputGaleria.addEventListener("change", function(){
 
     if(this.files.length){
 
-        processarFoto(this.files[0]);
+        selecionarFoto(this.files[0]);
 
     }
 
@@ -74,17 +74,12 @@ inputGaleria.addEventListener("change", function(){
 
 
 
-btnAlbum.addEventListener("click", abrirAlbum);
 
+// ==========================
+// MOSTRA PREVIEW
+// ==========================
 
-
-
-
-
-
-
-
-function processarFoto(arquivo){
+function selecionarFoto(arquivo){
 
 
     if(!arquivo.type.startsWith("image/")){
@@ -96,7 +91,7 @@ function processarFoto(arquivo){
 
             title:"Arquivo inválido",
 
-            text:"Escolha somente imagens."
+            text:"Escolha apenas imagens."
 
         });
 
@@ -107,7 +102,112 @@ function processarFoto(arquivo){
 
 
 
-    mostrarPreview(arquivo);
+    arquivoSelecionado = arquivo;
+
+
+
+    const leitor = new FileReader();
+
+
+
+    leitor.onload = function(e){
+
+
+        preview.src = e.target.result;
+
+
+        previewContainer.style.display = "block";
+
+
+        previewContainer.scrollIntoView({
+
+            behavior:"smooth"
+
+        });
+
+
+    };
+
+
+
+    leitor.readAsDataURL(arquivo);
+
+
+}
+
+
+
+
+
+
+
+
+// ==========================
+// DESCARTAR FOTO
+// ==========================
+
+btnDescartarFoto.addEventListener("click",function(){
+
+
+    limparPreview();
+
+
+});
+
+
+
+
+function limparPreview(){
+
+
+    arquivoSelecionado = null;
+
+
+    inputCamera.value = "";
+
+    inputGaleria.value = "";
+
+
+    preview.src = "";
+
+
+    previewContainer.style.display = "none";
+
+
+}
+
+
+
+
+
+
+
+
+// ==========================
+// ENVIAR FOTO CONFIRMADA
+// ==========================
+
+btnEnviarFoto.addEventListener("click",function(){
+
+
+    if(!arquivoSelecionado){
+
+
+        Swal.fire({
+
+            icon:"warning",
+
+            title:"Nenhuma foto selecionada",
+
+            text:"Escolha uma foto antes de enviar."
+
+        });
+
+
+        return;
+
+    }
+
 
 
 
@@ -115,7 +215,7 @@ function processarFoto(arquivo){
 
         title:"Enviando sua foto...",
 
-        text:"Guardando este momento especial no álbum.",
+        text:"Guardando este momento especial.",
 
         allowOutsideClick:false,
 
@@ -132,12 +232,18 @@ function processarFoto(arquivo){
 
 
 
-    comprimirImagem(arquivo)
+    comprimirImagem(arquivoSelecionado)
 
     .then(function(base64){
 
 
-        enviarFoto(base64, arquivo.name);
+        enviarFoto(
+
+            base64,
+
+            arquivoSelecionado.name
+
+        );
 
 
     })
@@ -163,7 +269,7 @@ function processarFoto(arquivo){
 
 
 
-}
+});
 
 
 
@@ -173,38 +279,9 @@ function processarFoto(arquivo){
 
 
 
-function mostrarPreview(arquivo){
-
-
-
-    let leitor = new FileReader();
-
-
-
-    leitor.onload=function(e){
-
-
-        preview.src=e.target.result;
-
-
-        previewContainer.style.display="block";
-
-
-    };
-
-
-    leitor.readAsDataURL(arquivo);
-
-
-}
-
-
-
-
-
-
-
-
+// ==========================
+// COMPACTAR IMAGEM
+// ==========================
 
 function comprimirImagem(arquivo){
 
@@ -212,8 +289,7 @@ function comprimirImagem(arquivo){
 return new Promise(function(resolve,reject){
 
 
-
-    let leitor=new FileReader();
+    const leitor = new FileReader();
 
 
 
@@ -221,7 +297,7 @@ return new Promise(function(resolve,reject){
 
 
 
-        let img=new Image();
+        const img = new Image();
 
 
 
@@ -229,23 +305,23 @@ return new Promise(function(resolve,reject){
 
 
 
-            let largura=img.width;
+            let largura = img.width;
 
-            let altura=img.height;
-
-
-            let limite=1200;
+            let altura = img.height;
 
 
+            const limite = 1200;
 
-            if(largura>altura){
 
 
-                if(largura>limite){
+            if(largura > altura){
 
-                    altura*=limite/largura;
 
-                    largura=limite;
+                if(largura > limite){
+
+                    altura = altura * limite / largura;
+
+                    largura = limite;
 
                 }
 
@@ -253,11 +329,11 @@ return new Promise(function(resolve,reject){
             }else{
 
 
-                if(altura>limite){
+                if(altura > limite){
 
-                    largura*=limite/altura;
+                    largura = largura * limite / altura;
 
-                    altura=limite;
+                    altura = limite;
 
                 }
 
@@ -266,20 +342,21 @@ return new Promise(function(resolve,reject){
 
 
 
-            let canvas=document.createElement("canvas");
-
-
-            canvas.width=largura;
-
-            canvas.height=altura;
+            const canvas = document.createElement("canvas");
 
 
 
-            canvas
+            canvas.width = largura;
 
-            .getContext("2d")
+            canvas.height = altura;
 
-            .drawImage(
+
+
+            const ctx = canvas.getContext("2d");
+
+
+
+            ctx.drawImage(
 
                 img,
 
@@ -301,7 +378,7 @@ return new Promise(function(resolve,reject){
 
                     "image/jpeg",
 
-                    .75
+                    0.75
 
                 )
 
@@ -313,18 +390,19 @@ return new Promise(function(resolve,reject){
 
 
 
-        img.onerror=reject;
+        img.onerror = reject;
 
 
-        img.src=e.target.result;
 
+        img.src = e.target.result;
 
 
     };
 
 
 
-    leitor.onerror=reject;
+    leitor.onerror = reject;
+
 
 
     leitor.readAsDataURL(arquivo);
@@ -332,6 +410,7 @@ return new Promise(function(resolve,reject){
 
 
 });
+
 
 }
 
@@ -343,11 +422,15 @@ return new Promise(function(resolve,reject){
 
 
 
+// ==========================
+// ENVIO PARA APPS SCRIPT
+// ==========================
+
 function enviarFoto(base64,nomeArquivo){
 
 
 
-const dados={
+const dados = {
 
 
     acao:"salvarFoto",
@@ -374,19 +457,36 @@ fetch(URL_API,{
     method:"POST",
 
 
+    headers:{
+
+
+        "Content-Type":"text/plain;charset=utf-8"
+
+
+    },
+
+
     body:JSON.stringify(dados)
 
 
 })
 
 
-.then(res=>res.json())
+
+.then(function(res){
+
+    return res.json();
+
+})
 
 
-.then(resultado=>{
+
+.then(function(resultado){
+
 
 
     Swal.close();
+
 
 
 
@@ -403,7 +503,7 @@ fetch(URL_API,{
             title:"Foto enviada! 👑",
 
 
-            text:"Obrigado por participar deste momento.",
+            text:"Obrigado por participar desta lembrança.",
 
 
             showDenyButton:true,
@@ -439,7 +539,7 @@ fetch(URL_API,{
             if(resposta.isConfirmed){
 
 
-                limparCampos(false);
+                limparTudo(false);
 
 
             }
@@ -448,12 +548,10 @@ fetch(URL_API,{
             else if(resposta.isDenied){
 
 
-
-                limparCampos(true);
+                limparTudo(true);
 
 
                 voltarInicio();
-
 
 
             }
@@ -462,8 +560,7 @@ fetch(URL_API,{
             else if(resposta.dismiss === Swal.DismissReason.cancel){
 
 
-
-                limparCampos(true);
+                limparTudo(true);
 
 
                 abrirAlbum();
@@ -477,7 +574,6 @@ fetch(URL_API,{
 
 
 
-
     }else{
 
 
@@ -487,7 +583,7 @@ fetch(URL_API,{
 
             title:"Erro",
 
-            text:resultado.msg
+            text:resultado.msg || "Falha no envio."
 
         });
 
@@ -498,10 +594,14 @@ fetch(URL_API,{
 
 })
 
+
+
 .catch(function(){
 
 
+
     Swal.close();
+
 
 
     Swal.fire({
@@ -515,7 +615,9 @@ fetch(URL_API,{
     });
 
 
+
 });
+
 
 
 }
@@ -528,12 +630,32 @@ fetch(URL_API,{
 
 
 
+// ==========================
+// ÁLBUM
+// ==========================
+
+btnAlbum.addEventListener("click",abrirAlbum);
+
+
+
 function abrirAlbum(){
+
 
 
 fetch(URL_API,{
 
+
     method:"POST",
+
+
+    headers:{
+
+
+        "Content-Type":"text/plain;charset=utf-8"
+
+
+    },
+
 
     body:JSON.stringify({
 
@@ -541,13 +663,19 @@ fetch(URL_API,{
 
     })
 
+
 })
 
 
-.then(res=>res.json())
+.then(function(res){
+
+    return res.json();
+
+})
 
 
-.then(resultado=>{
+.then(function(resultado){
+
 
 
     if(resultado.sucesso){
@@ -559,50 +687,60 @@ fetch(URL_API,{
     }
 
 
+    else{
+
+
+        Swal.fire({
+
+            icon:"error",
+
+            title:"Erro",
+
+            text:"Não foi possível abrir o álbum."
+
+        });
+
+
+    }
+
+
+
 });
 
 
-}
-
-
-
-
-
-
-
-
-
-function limparCampos(limparNome){
-
-
-
-inputCamera.value="";
-
-
-inputGaleria.value="";
-
-
-preview.src="";
-
-
-previewContainer.style.display="none";
-
-
-
-if(limparNome){
-
-
-    nomeInput.value="";
-
 
 }
 
 
 
+
+
+
+
+
+
+// ==========================
+// LIMPEZA
+// ==========================
+
+function limparTudo(limparNome){
+
+
+    limparPreview();
+
+
+
+    if(limparNome){
+
+
+        nomeInput.value = "";
+
+
+    }
+
+
+
 }
-
-
-
 
 
 
@@ -612,10 +750,10 @@ if(limparNome){
 function voltarInicio(){
 
 
-cameraScreen.style.display="none";
+    cameraScreen.style.display="none";
 
 
-welcomeScreen.style.display="block";
+    welcomeScreen.style.display="block";
 
 
 }

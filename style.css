@@ -45,7 +45,7 @@ body {
 
         circle at top,
 
-        #454545,
+        #4a4a4a,
 
         #111
 
@@ -82,14 +82,14 @@ body {
 
 
 
-/* ===========================
-   TELA DE BOAS VINDAS
-=========================== */
+/* =========================
+   TELA INICIAL
+========================= */
 
 
 #welcome-screen {
 
-    animation:aparecer .5s ease;
+    animation:fadeIn .5s ease;
 
 }
 
@@ -133,7 +133,7 @@ body {
 
     object-fit:contain;
 
-    filter:drop-shadow(0 8px 15px rgba(0,0,0,.18));
+    filter:drop-shadow(0 10px 15px rgba(0,0,0,.2));
 
 }
 
@@ -142,12 +142,11 @@ body {
 
 
 
-
 .crown-icon {
 
-    font-size:42px;
-
     color:var(--gold);
+
+    font-size:42px;
 
     margin-bottom:5px;
 
@@ -165,13 +164,11 @@ h1 {
 
     font-size:30px;
 
-    color:#1c1c1c;
-
     letter-spacing:1px;
 
+    color:#1c1c1c;
+
 }
-
-
 
 
 
@@ -183,9 +180,9 @@ h2 {
 
     font-size:16px;
 
-    color:var(--gold-dark);
-
     letter-spacing:2px;
+
+    color:var(--gold-dark);
 
     text-transform:uppercase;
 
@@ -215,14 +212,16 @@ h2 {
 
 
 
-/* ===========================
-   CÂMERA
-=========================== */
+
+/* =========================
+   CAMERA
+========================= */
+
 
 
 #camera-screen {
 
-    animation:aparecer .5s ease;
+    animation:fadeIn .5s ease;
 
 }
 
@@ -277,9 +276,10 @@ h2 {
 
 
 
+
 .card {
 
-    padding:25px 20px;
+    padding:25px 20px 30px;
 
     text-align:center;
 
@@ -290,7 +290,11 @@ h2 {
 
 
 
-/* Caixa de instruções */
+
+/* =========================
+   INSTRUÇÕES
+========================= */
+
 
 
 .instructions-box {
@@ -303,7 +307,7 @@ h2 {
 
         #faf7ef,
 
-        #fff
+        #ffffff
 
     );
 
@@ -313,9 +317,9 @@ h2 {
 
     padding:15px;
 
-    text-align:left;
-
     margin-bottom:20px;
+
+    text-align:left;
 
 }
 
@@ -337,11 +341,11 @@ h2 {
 
     margin:0;
 
-    color:#555;
-
     font-size:13px;
 
     line-height:1.6;
+
+    color:#555;
 
 }
 
@@ -351,7 +355,12 @@ h2 {
 
 
 
-/* Campo nome */
+
+
+/* =========================
+   CAMPO NOME
+========================= */
+
 
 
 .input-group {
@@ -368,11 +377,11 @@ h2 {
 
     display:block;
 
+    margin-bottom:7px;
+
     font-size:13px;
 
     font-weight:600;
-
-    margin-bottom:7px;
 
     color:#444;
 
@@ -386,17 +395,17 @@ h2 {
 
     height:48px;
 
+    padding:0 14px;
+
     border-radius:12px;
 
     border:1px solid #ddd;
 
-    padding:0 14px;
+    background:#fafafa;
 
     font-size:16px;
 
     outline:none;
-
-    background:#fafafa;
 
 }
 
@@ -406,6 +415,8 @@ h2 {
 
     border-color:var(--gold);
 
+    background:white;
+
 }
 
 
@@ -414,18 +425,25 @@ h2 {
 
 
 
-/* Preview */
+
+
+/* =========================
+   PREVIEW
+========================= */
+
 
 
 #preview-container {
 
     background:#faf7ef;
 
-    border:2px dashed var(--gold);
+    border:
+
+    2px dashed var(--gold);
 
     border-radius:15px;
 
-    padding:8px;
+    padding:10px;
 
     margin-bottom:18px;
 
@@ -435,13 +453,13 @@ h2 {
 
 .preview-title {
 
-    font-size:13px;
-
-    font-weight:600;
+    margin:5px;
 
     color:#8a682b;
 
-    margin:5px;
+    font-size:13px;
+
+    font-weight:700;
 
 }
 
@@ -457,6 +475,25 @@ h2 {
 
     border-radius:10px;
 
+    display:block;
+
+}
+
+
+
+
+
+
+.preview-actions {
+
+    margin-top:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
 }
 
 
@@ -465,7 +502,10 @@ h2 {
 
 
 
-/* Botões */
+/* =========================
+   BOTÕES
+========================= */
+
 
 
 .actions-container {
@@ -482,13 +522,13 @@ h2 {
 
 .btn-style {
 
-    min-height:52px;
-
     width:100%;
 
-    border:none;
+    min-height:52px;
 
     border-radius:14px;
+
+    border:none;
 
     display:flex;
 
@@ -505,6 +545,8 @@ h2 {
     cursor:pointer;
 
     transition:.25s;
+
+    text-decoration:none;
 
 }
 
@@ -526,12 +568,13 @@ h2 {
 
 
 
+
+
 .btn-style input[type=file] {
 
     display:none;
 
 }
-
 
 
 
@@ -562,7 +605,7 @@ h2 {
 
 .btn-gallery {
 
-    background:#f2f2f2;
+    background:#f1f1f1;
 
     color:#333;
 
@@ -600,6 +643,21 @@ h2 {
 
 
 
+.btn-discard {
+
+    background:#eeeeee;
+
+    color:#555;
+
+    border:1px solid #ddd;
+
+}
+
+
+
+
+
+
 
 .footer-note {
 
@@ -619,7 +677,7 @@ h2 {
 
 
 
-@keyframes aparecer {
+@keyframes fadeIn {
 
 
 from {
@@ -647,7 +705,16 @@ to {
 
 
 
+
 @media(max-width:400px){
+
+
+    body {
+
+        padding:10px;
+
+    }
+
 
 
     .welcome-content {
@@ -655,6 +722,7 @@ to {
         padding:25px 18px;
 
     }
+
 
 
     .logo-container {
@@ -666,11 +734,13 @@ to {
     }
 
 
+
     h1 {
 
         font-size:25px;
 
     }
+
 
 
 }
