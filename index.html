@@ -1,263 +1,276 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <base target="_top">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-  
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<html lang="pt-BR">
 
-  <style>
-    <?!= include('CSS'); ?>
-  </style>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Baile Real - 80 Anos Rainha Ilda</title>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="style.css">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </head>
+
+
 <body>
 
-  <div class="camera-body">
+
+<div class="camera-body">
+
+
     <div class="camera-flash-bar">
-      <div class="viewfinder-lens"></div>
-      <div class="flash-bulb"><i class="fa-solid fa-bolt"></i></div>
+
+
+        <div class="viewfinder-lens"></div>
+
+
+        <div class="flash-bulb">
+
+            <i class="fa-solid fa-bolt"></i>
+
+        </div>
+
+
     </div>
+
+
+
+
 
     <div class="card">
-      <div class="badge-container">
-        <i class="fa-solid fa-crown crown-icon"></i>
-      </div>
 
-      <h1>Baile Real</h1>
-      <h2>80 Anos Rainha Ilda</h2>
-      
-      <p class="subtitle">
-        Sua câmera descartável digital da festa. Tire fotos, divirta-se e eternize este momento conosco!
-      </p>
 
-      <div class="input-group">
-        <label for="nome"><i class="fa-solid fa-user-pen"></i> Identifique-se (Opcional)</label>
-        <input
-          type="text"
-          id="nome"
-          placeholder="Digite seu nome ou da sua família"
-        >
-      </div>
 
-      <div id="preview-container" style="display: none;">
-        <img id="preview" alt="Prévia da foto">
-      </div>
+        <div class="badge-container">
 
-      <div class="actions-container">
-        <label class="btn-style btn-camera">
-          <i class="fa-solid fa-camera-retro"></i>
-          Tirar Foto / Câmera
-          <input
-            type="file"
-            id="input-camera"
-            accept="image/*"
-            capture="environment"
-            onchange="processarFoto(this)"
-          >
-        </label>
+            <i class="fa-solid fa-crown crown-icon"></i>
 
-        <label class="btn-style btn-gallery">
-          <i class="fa-solid fa-images"></i>
-          Escolher da Galeria
-          <input
-            type="file"
-            id="input-galeria"
-            accept="image/*"
-            onchange="processarFoto(this)"
-          >
-        </label>
+        </div>
 
-        <button type="button" class="btn-style btn-view-album" onclick="abrirAlbum()">
-          <i class="fa-solid fa-photo-film"></i>
-          Ver Álbum de Fotos
-        </button>
-      </div>
 
-      <div class="footer-note">
-        <p>✨ Cada clique vai direto para o álbum da Rainha Ilda ✨</p>
-      </div>
+
+
+        <h1>Baile Real</h1>
+
+
+        <h2>80 Anos Rainha Ilda</h2>
+
+
+
+
+
+        <p class="subtitle">
+
+            Sua câmera descartável digital da festa.
+
+            Tire fotos, divirta-se e eternize este momento conosco!
+
+        </p>
+
+
+
+
+
+        <div class="input-group">
+
+
+            <label for="nome">
+
+                <i class="fa-solid fa-user"></i>
+
+                Identifique-se (Opcional)
+
+            </label>
+
+
+
+
+            <input
+
+                id="nome"
+
+                type="text"
+
+                placeholder="Digite seu nome ou família"
+
+            >
+
+
+        </div>
+
+
+
+
+
+
+
+        <div id="preview-container" style="display:none;">
+
+
+            <img id="preview" alt="Prévia da foto">
+
+
+        </div>
+
+
+
+
+
+
+
+
+        <div class="actions-container">
+
+
+
+
+
+            <label class="btn-style btn-camera">
+
+
+                <i class="fa-solid fa-camera-retro"></i>
+
+
+                Tirar Foto
+
+
+                <input
+
+                    id="input-camera"
+
+                    type="file"
+
+                    accept="image/*"
+
+                    capture="environment"
+
+                >
+
+
+            </label>
+
+
+
+
+
+
+
+
+
+            <label class="btn-style btn-gallery">
+
+
+                <i class="fa-solid fa-images"></i>
+
+
+                Escolher da Galeria
+
+
+
+                <input
+
+                    id="input-galeria"
+
+                    type="file"
+
+                    accept="image/*"
+
+                >
+
+
+
+            </label>
+
+
+
+
+
+
+
+
+            <button
+
+                id="btnAlbum"
+
+                class="btn-style btn-view-album"
+
+                type="button"
+
+            >
+
+
+                <i class="fa-solid fa-photo-film"></i>
+
+
+                Ver Álbum de Fotos
+
+
+
+            </button>
+
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+        <div class="footer-note">
+
+
+            ✨ Cada clique vai direto para o álbum da Rainha Ilda ✨
+
+
+        </div>
+
+
+
+
+
+
     </div>
-  </div>
 
-  <script>
-    function processarFoto(input) {
-      if (!input.files || !input.files[0]) return;
-      var file = input.files[0];
 
-      if (file.type && file.type.indexOf('image/') !== 0) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Arquivo inválido',
-          text: 'Por favor, selecione apenas imagens.'
-        });
-        return;
-      }
 
-      var nome = document.getElementById('nome').value.trim();
-      mostrarPreview(file);
 
-      Swal.fire({
-        title: 'Revelando a foto...',
-        text: 'Enviando para o álbum real',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        didOpen: function() {
-          if (Swal.showLoading) Swal.showLoading();
-        }
-      });
 
-      comprimirImagem(file, function(dataUrl) {
-        if (!dataUrl) {
-          Swal.close();
-          Swal.fire({ icon: 'error', title: 'Erro', text: 'Não foi possível ler a imagem.' });
-          return;
-        }
+</div>
 
-        google.script.run
-          .withSuccessHandler(function(res) {
-            Swal.close();
 
-            if (!res || !res.sucesso) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Erro',
-                text: (res && res.msg) ? res.msg : 'Não foi possível enviar a foto.'
-              });
-              return;
-            }
 
-            Swal.fire({
-              icon: 'success',
-              title: 'Foto revelada! 👑',
-              text: 'Deseja tirar outra foto?',
-              showCancelButton: true,
-              confirmButtonText: 'Tirar outra',
-              cancelButtonText: 'Ver Álbum',
-              confirmButtonColor: '#b8860b',
-              cancelButtonColor: '#4a5568'
-            }).then(function(resultado) {
-              if (resultado.isConfirmed) {
-                limparCampos(false);
-              } else {
-                limparCampos(true);
-                abrirAlbum();
-              }
-            });
-          })
-          .withFailureHandler(function() {
-            Swal.close();
-            Swal.fire({
-              icon: 'error',
-              title: 'Falha na comunicação',
-              text: 'Ocorreu um erro no servidor. Tente novamente.'
-            });
-          })
-          .salvarFoto(
-            dataUrl.split(',')[1],
-            file.name || 'foto.jpg',
-            nome
-          );
-      });
-    }
 
-    function abrirAlbum() {
-      google.script.run
-        .withSuccessHandler(function(res) {
-          if (!res || !res.sucesso) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Erro',
-              text: 'Não foi possível abrir o álbum.'
-            });
-            return;
-          }
-          window.open(res.url, '_blank');
-        })
-        .withFailureHandler(function() {
-          Swal.fire({
-            icon: 'error',
-            title: 'Erro',
-            text: 'Falha ao acessar o álbum.'
-          });
-        })
-        .obterLinkPastaRaiz();
-    }
 
-    function mostrarPreview(file) {
-      var preview = document.getElementById('preview');
-      var container = document.getElementById('preview-container');
-      var urlCreator = window.URL || window.webkitURL;
-      if (urlCreator && urlCreator.createObjectURL) {
-        preview.src = urlCreator.createObjectURL(file);
-        container.style.display = 'block';
-      }
-    }
 
-    function limparCampos(limparNome) {
-      var galeria = document.getElementById('input-galeria');
-      var camera = document.getElementById('input-camera');
-      if(galeria) galeria.value = '';
-      if(camera) camera.value = '';
-      
-      document.getElementById('preview-container').style.display = 'none';
-      document.getElementById('preview').src = '';
+<script src="script.js"></script>
 
-      if (limparNome) {
-        document.getElementById('nome').value = '';
-      }
-    }
 
-    // Função compatível com ES5 puro para rodar em navegadores antigos de Android (J7 Prime, etc.)
-    function comprimirImagem(file, callback) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        var img = new Image();
-        img.onload = function() {
-          var canvas = document.createElement('canvas');
-          var max = 1000; // Reduzido levemente para evitar travamentos em aparelhos com pouca RAM
-          var largura = img.width;
-          var altura = img.height;
-
-          if (largura > altura) {
-            if (largura > max) {
-              altura *= max / largura;
-              largura = max;
-            }
-          } else {
-            if (altura > max) {
-              largura *= max / altura;
-              altura = max;
-            }
-          }
-
-          canvas.width = largura;
-          canvas.height = altura;
-          var ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, largura, altura);
-          
-          try {
-            var dataUrl = canvas.toDataURL('image/jpeg', 0.75);
-            callback(dataUrl);
-          } catch (err) {
-            callback(null);
-          }
-        };
-        img.onerror = function() {
-          callback(null);
-        };
-        img.src = e.target.result;
-      };
-      reader.onerror = function() {
-        callback(null);
-      };
-      reader.readAsDataURL(file);
-    }
-  </script>
 </body>
+
+
 </html>

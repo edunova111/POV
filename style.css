@@ -1,218 +1,499 @@
 :root {
-  --primary-gold: #c5a059;
-  --dark-bg: #121214;
-  --card-bg: #ffffff;
-  --text-main: #2b2b2b;
-  --text-muted: #6b7280;
-  --border-radius: 16px;
+
+    --primary-gold: #c5a059;
+    --gold-dark: #9b7832;
+
+    --dark-bg: #121214;
+
+    --card-bg: #ffffff;
+
+    --text-main: #2b2b2b;
+
+    --text-muted: #6b7280;
+
+    --radius: 18px;
+
 }
+
 
 * {
-  box-sizing: border-box;
+
+    box-sizing: border-box;
+
 }
+
+
+html,
+body {
+
+    width:100%;
+
+    min-height:100%;
+
+}
+
 
 body {
-  margin: 0;
-  padding: 12px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
-  color: var(--text-main);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  min-height: 100vh;
+
+    margin:0;
+
+    padding:15px;
+
+    font-family:'Plus Jakarta Sans', sans-serif;
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #151515,
+
+        #303030
+
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:100vh;
+
 }
 
-/* Estrutura da câmera ajustada para evitar sobreposições */
+
+
 .camera-body {
-  width: 100%;
-  max-width: 420px;
-  background: var(--card-bg);
-  border-radius: var(--border-radius);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 2px rgba(197, 160, 89, 0.3);
-  overflow: hidden;
-  position: relative;
+
+    width:100%;
+
+    max-width:430px;
+
+    background:white;
+
+    border-radius:var(--radius);
+
+    overflow:hidden;
+
+    box-shadow:
+
+    0 20px 50px rgba(0,0,0,.45),
+
+    0 0 0 2px rgba(197,160,89,.35);
+
 }
 
-/* Barra superior da câmera */
+
+
+
 .camera-flash-bar {
-  background: #1e1e1e;
-  padding: 12px 20px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  border-bottom: 2px solid var(--primary-gold);
+
+    height:65px;
+
+    background:#1d1d1d;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:0 22px;
+
+    border-bottom:2px solid var(--primary-gold);
+
 }
+
+
 
 .viewfinder-lens {
-  width: 16px;
-  height: 16px;
-  background: #000;
-  border-radius: 50%;
-  border: 2px solid #555;
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    background:#000;
+
+    border:2px solid #666;
+
 }
+
+
 
 .flash-bulb {
-  color: var(--primary-gold);
-  font-size: 14px;
+
+    color:var(--primary-gold);
+
+    font-size:20px;
+
 }
+
+
+
+
 
 .card {
-  padding: 24px 20px;
-  text-align: center;
+
+    padding:26px 20px;
+
+    text-align:center;
+
 }
+
+
+
+
 
 .badge-container {
-  margin-bottom: 8px;
+
+    margin-bottom:8px;
+
 }
+
 
 .crown-icon {
-  font-size: 2.2rem;
-  color: var(--primary-gold);
+
+    color:var(--primary-gold);
+
+    font-size:42px;
+
 }
+
+
+
+
 
 h1 {
-  font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
-  color: #1a1a1a;
-  margin: 4px 0 0 0;
-  letter-spacing: 1px;
+
+    margin:0;
+
+    font-family:'Cinzel',serif;
+
+    font-size:28px;
+
+    letter-spacing:1px;
+
+    color:#181818;
+
 }
+
+
+
+
 
 h2 {
-  font-family: 'Cinzel', serif;
-  font-size: 1rem;
-  color: var(--primary-gold);
-  margin: 4px 0 12px 0;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+
+    margin:8px 0 15px;
+
+    font-family:'Cinzel',serif;
+
+    font-size:16px;
+
+    color:var(--primary-gold);
+
+    letter-spacing:2px;
+
 }
+
+
+
+
 
 .subtitle {
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  line-height: 1.4;
-  margin-bottom: 20px;
+
+    color:var(--text-muted);
+
+    font-size:14px;
+
+    line-height:1.5;
+
+    margin-bottom:22px;
+
 }
+
+
+
+
+
 
 .input-group {
-  text-align: left;
-  margin-bottom: 16px;
+
+    text-align:left;
+
+    margin-bottom:18px;
+
 }
+
+
+
 
 .input-group label {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: #4b5563;
-  margin-bottom: 6px;
+
+    display:block;
+
+    margin-bottom:7px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:#444;
+
 }
 
-input[type="text"] {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 10px;
-  font-size: 16px; /* Evita zoom automático indesejado no iOS/Android antigo */
-  background-color: #f9fafb;
+
+
+
+
+.input-group input {
+
+    width:100%;
+
+    height:48px;
+
+    padding:0 14px;
+
+    border-radius:10px;
+
+    border:
+
+    1px solid #ddd;
+
+    font-size:16px;
+
+    outline:none;
+
+    background:#fafafa;
+
 }
 
-input[type="text"]:focus {
-  border-color: var(--primary-gold);
-  outline: none;
-  background-color: #fff;
+
+
+.input-group input:focus {
+
+    border-color:var(--primary-gold);
+
+    background:white;
+
 }
 
-/* Área de Pré-visualização */
+
+
+
+
+
 #preview-container {
-  margin-bottom: 16px;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 2px dashed var(--primary-gold);
-  background: #fdfbf7;
-  padding: 4px;
+
+    width:100%;
+
+    margin-bottom:18px;
+
+    padding:5px;
+
+    border-radius:12px;
+
+    border:
+
+    2px dashed var(--primary-gold);
+
+    background:#faf7ef;
+
 }
+
+
+
+
 
 #preview {
-  width: 100%;
-  max-height: 200px;
-  object-fit: contain;
-  border-radius: 6px;
-  display: block;
+
+    width:100%;
+
+    max-height:260px;
+
+    object-fit:contain;
+
+    border-radius:8px;
+
+    display:block;
+
 }
 
-/* Botões Estilizados e Blindados contra quebras */
+
+
+
+
+
 .actions-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: 10px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
 }
+
+
+
+
 
 .btn-style {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 10px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  text-decoration: none;
-  -webkit-appearance: none;
+
+    width:100%;
+
+    min-height:52px;
+
+    border-radius:12px;
+
+    border:none;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    user-select:none;
+
+    -webkit-tap-highlight-color:transparent;
+
 }
+
+
+
+
+.btn-style:active {
+
+    transform:scale(.97);
+
+}
+
+
+
+
 
 .btn-style input[type="file"] {
-  display: none;
+
+    display:none;
+
 }
+
+
+
+
 
 .btn-camera {
-  background: -webkit-gradient(linear, left top, right bottom, from(#2b2b2b), to(#1a1a1a));
-  background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 100%);
-  color: #ffffff;
-  border: 1px solid #444;
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        #303030,
+
+        #111
+
+    );
+
+    color:white;
+
 }
+
+
+
+
 
 .btn-gallery {
-  background: #f3f4f6;
-  color: #374151;
-  border: 1px solid #d1d5db;
+
+    background:#f1f3f5;
+
+    color:#333;
+
+    border:1px solid #ddd;
+
 }
+
+
+
+
 
 .btn-view-album {
-  background: -webkit-gradient(linear, left top, right bottom, from(#c5a059), to(#a3813e));
-  background: linear-gradient(135deg, #c5a059 0%, #a3813e 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        var(--primary-gold),
+
+        var(--gold-dark)
+
+    );
+
+    color:white;
+
+    box-shadow:
+
+    0 6px 18px rgba(197,160,89,.35);
+
 }
 
+
+
+
+
 .footer-note {
-  margin-top: 20px;
-  font-size: 0.78rem;
-  color: var(--text-muted);
+
+    margin-top:22px;
+
+    color:#777;
+
+    font-size:13px;
+
+}
+
+
+
+
+
+@media(max-width:380px){
+
+
+    .card {
+
+        padding:22px 15px;
+
+    }
+
+
+    h1 {
+
+        font-size:24px;
+
+    }
+
+
+    h2 {
+
+        font-size:14px;
+
+    }
+
+
 }
