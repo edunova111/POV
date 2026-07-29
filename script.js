@@ -1,6 +1,15 @@
 const URL_API = "https://script.google.com/macros/s/AKfycbz3Z_79FI4l4HTnvKIhWzqXcDwIfWSCSqkDj1nlJNbRXC4WZME5xDjKTvUdwT4Ube4Vlw/exec";
 
 
+// ELEMENTOS
+
+const welcomeScreen = document.getElementById("welcome-screen");
+
+const cameraScreen = document.getElementById("camera-screen");
+
+const entrarBtn = document.getElementById("entrar-btn");
+
+
 const nomeInput = document.getElementById("nome");
 
 const inputCamera = document.getElementById("input-camera");
@@ -15,27 +24,53 @@ const btnAlbum = document.getElementById("btnAlbum");
 
 
 
+
+
+// ENTRAR NA FESTA
+
+entrarBtn.addEventListener("click", function(){
+
+    welcomeScreen.style.display = "none";
+
+    cameraScreen.style.display = "block";
+
+});
+
+
+
+
+
+
+
+// ESCOLHA DA CÂMERA
+
 inputCamera.addEventListener("change", function(){
 
     if(this.files.length){
 
-        enviarFoto(this.files[0]);
+        processarFoto(this.files[0]);
 
     }
 
 });
 
 
+
+
+
+// ESCOLHA DA GALERIA
 
 inputGaleria.addEventListener("change", function(){
 
     if(this.files.length){
 
-        enviarFoto(this.files[0]);
+        processarFoto(this.files[0]);
 
     }
 
 });
+
+
 
 
 
@@ -44,7 +79,12 @@ btnAlbum.addEventListener("click", abrirAlbum);
 
 
 
-function enviarFoto(arquivo){
+
+
+
+
+
+function processarFoto(arquivo){
 
 
     if(!arquivo.type.startsWith("image/")){
@@ -56,7 +96,7 @@ function enviarFoto(arquivo){
 
             title:"Arquivo inválido",
 
-            text:"Escolha uma imagem."
+            text:"Escolha somente imagens."
 
         });
 
@@ -73,11 +113,12 @@ function enviarFoto(arquivo){
 
     Swal.fire({
 
-        title:"Preparando foto...",
+        title:"Enviando sua foto...",
 
-        text:"Aguarde enquanto revelamos sua foto.",
+        text:"Guardando este momento especial no álbum.",
 
         allowOutsideClick:false,
+
 
         didOpen:function(){
 
@@ -89,12 +130,14 @@ function enviarFoto(arquivo){
 
 
 
-    reduzirImagem(arquivo)
+
+
+    comprimirImagem(arquivo)
 
     .then(function(base64){
 
 
-        enviarParaDrive(base64, arquivo.name);
+        enviarFoto(base64, arquivo.name);
 
 
     })
@@ -119,7 +162,11 @@ function enviarFoto(arquivo){
     });
 
 
+
 }
+
+
+
 
 
 
@@ -129,9 +176,24 @@ function enviarFoto(arquivo){
 function mostrarPreview(arquivo){
 
 
-    preview.src = URL.createObjectURL(arquivo);
 
-    previewContainer.style.display="block";
+    let leitor = new FileReader();
+
+
+
+    leitor.onload=function(e){
+
+
+        preview.src=e.target.result;
+
+
+        previewContainer.style.display="block";
+
+
+    };
+
+
+    leitor.readAsDataURL(arquivo);
 
 
 }
@@ -142,128 +204,108 @@ function mostrarPreview(arquivo){
 
 
 
-function reduzirImagem(arquivo){
 
 
-    return new Promise(function(resolve,reject){
+function comprimirImagem(arquivo){
 
 
-
-        var leitor = new FileReader();
-
-
-
-        leitor.onload=function(e){
+return new Promise(function(resolve,reject){
 
 
 
-            var imagem = new Image();
+    let leitor=new FileReader();
 
 
 
-            imagem.onload=function(){
+    leitor.onload=function(e){
 
 
 
-                var largura = imagem.width;
-
-                var altura = imagem.height;
+        let img=new Image();
 
 
 
-                var limite = 1200;
+        img.onload=function(){
 
 
 
-                if(largura > altura){
+            let largura=img.width;
+
+            let altura=img.height;
 
 
-                    if(largura > limite){
+            let limite=1200;
 
 
-                        altura = altura * limite / largura;
 
-                        largura = limite;
-
-
-                    }
+            if(largura>altura){
 
 
-                }
+                if(largura>limite){
 
-                else{
+                    altura*=limite/largura;
 
-
-                    if(altura > limite){
-
-
-                        largura = largura * limite / altura;
-
-                        altura = limite;
-
-
-                    }
-
+                    largura=limite;
 
                 }
 
 
+            }else{
 
 
-                var canvas=document.createElement("canvas");
+                if(altura>limite){
+
+                    largura*=limite/altura;
+
+                    altura=limite;
+
+                }
 
 
-                canvas.width=largura;
-
-                canvas.height=altura;
-
-
-
-
-                var contexto=canvas.getContext("2d");
-
-
-
-                contexto.drawImage(
-
-                    imagem,
-
-                    0,
-
-                    0,
-
-                    largura,
-
-                    altura
-
-                );
+            }
 
 
 
+            let canvas=document.createElement("canvas");
 
 
-                resolve(
+            canvas.width=largura;
 
-                    canvas.toDataURL(
-
-                        "image/jpeg",
-
-                        0.75
-
-                    )
-
-                );
+            canvas.height=altura;
 
 
 
-            };
+            canvas
+
+            .getContext("2d")
+
+            .drawImage(
+
+                img,
+
+                0,
+
+                0,
+
+                largura,
+
+                altura
+
+            );
 
 
 
-            imagem.onerror=reject;
+            resolve(
 
+                canvas.toDataURL(
 
-            imagem.src=e.target.result;
+                    "image/jpeg",
+
+                    .75
+
+                )
+
+            );
 
 
 
@@ -271,15 +313,25 @@ function reduzirImagem(arquivo){
 
 
 
-        leitor.onerror=reject;
+        img.onerror=reject;
 
 
-        leitor.readAsDataURL(arquivo);
+        img.src=e.target.result;
 
 
 
-    });
+    };
 
+
+
+    leitor.onerror=reject;
+
+
+    leitor.readAsDataURL(arquivo);
+
+
+
+});
 
 }
 
@@ -289,192 +341,185 @@ function reduzirImagem(arquivo){
 
 
 
-function enviarParaDrive(base64,nomeArquivo){
 
 
+function enviarFoto(base64,nomeArquivo){
 
-    var dados = new FormData();
 
 
+const dados={
 
-    dados.append(
 
-        "acao",
+    acao:"salvarFoto",
 
-        "salvarFoto"
 
-    );
+    base64Data:base64,
 
 
+    fileName:nomeArquivo,
 
-    dados.append(
 
-        "base64Data",
+    nomeConvidado:nomeInput.value.trim()
 
-        base64
 
-    );
+};
 
 
 
-    dados.append(
 
-        "fileName",
 
-        nomeArquivo
+fetch(URL_API,{
 
-    );
 
+    method:"POST",
 
 
-    dados.append(
+    body:JSON.stringify(dados)
 
-        "nomeConvidado",
 
-        nomeInput.value.trim()
+})
 
-    );
 
+.then(res=>res.json())
 
 
+.then(resultado=>{
 
 
+    Swal.close();
 
-    fetch(URL_API,{
 
 
-        method:"POST",
-
-
-        body:dados
-
-
-    })
-
-
-    .then(function(resposta){
-
-
-        return resposta.json();
-
-
-    })
-
-
-    .then(function(resultado){
-
-
-
-        Swal.close();
-
-
-
-        if(resultado.sucesso){
-
-
-
-            Swal.fire({
-
-
-                icon:"success",
-
-
-                title:"Foto revelada! 👑",
-
-
-                text:"Sua foto já está no álbum.",
-
-
-                showCancelButton:true,
-
-
-                confirmButtonText:"Tirar outra",
-
-
-                cancelButtonText:"Ver álbum"
-
-
-            })
-
-
-            .then(function(opcao){
-
-
-
-                limparTela();
-
-
-
-                if(opcao.dismiss === Swal.DismissReason.cancel){
-
-
-                    abrirAlbum();
-
-
-                }
-
-
-            });
-
-
-
-        }
-
-        else{
-
-
-            Swal.fire({
-
-
-                icon:"error",
-
-
-                title:"Erro",
-
-
-                text:resultado.msg
-
-
-            });
-
-
-        }
-
-
-
-
-
-    })
-
-    .catch(function(){
-
-
-
-        Swal.close();
+    if(resultado.sucesso){
 
 
 
         Swal.fire({
 
 
-            icon:"error",
+            icon:"success",
 
 
-            title:"Falha no envio",
+            title:"Foto enviada! 👑",
 
 
-            text:"Não foi possível conectar ao álbum."
+            text:"Obrigado por participar deste momento.",
+
+
+            showDenyButton:true,
+
+
+            showCancelButton:true,
+
+
+            confirmButtonText:"Tirar outra foto",
+
+
+            denyButtonText:"Não, já terminei",
+
+
+            cancelButtonText:"Ver álbum",
+
+
+            confirmButtonColor:"#c5a059",
+
+
+            denyButtonColor:"#555",
+
+
+            cancelButtonColor:"#222"
+
+
+        })
+
+        .then(function(resposta){
+
+
+
+            if(resposta.isConfirmed){
+
+
+                limparCampos(false);
+
+
+            }
+
+
+            else if(resposta.isDenied){
+
+
+
+                limparCampos(true);
+
+
+                voltarInicio();
+
+
+
+            }
+
+
+            else if(resposta.dismiss === Swal.DismissReason.cancel){
+
+
+
+                limparCampos(true);
+
+
+                abrirAlbum();
+
+
+            }
+
 
 
         });
 
 
 
+
+    }else{
+
+
+        Swal.fire({
+
+            icon:"error",
+
+            title:"Erro",
+
+            text:resultado.msg
+
+        });
+
+
+    }
+
+
+
+})
+
+.catch(function(){
+
+
+    Swal.close();
+
+
+    Swal.fire({
+
+        icon:"error",
+
+        title:"Erro de comunicação",
+
+        text:"Não foi possível enviar a foto."
+
     });
 
 
+});
+
 
 }
+
 
 
 
@@ -486,103 +531,71 @@ function enviarParaDrive(base64,nomeArquivo){
 function abrirAlbum(){
 
 
+fetch(URL_API,{
 
-    var dados = new FormData();
+    method:"POST",
 
+    body:JSON.stringify({
 
-    dados.append(
-
-        "acao",
-
-        "obterLink"
-
-    );
-
-
-
-
-    fetch(URL_API,{
-
-
-        method:"POST",
-
-
-        body:dados
-
+        acao:"obterLink"
 
     })
 
-
-    .then(function(resposta){
-
-
-        return resposta.json();
+})
 
 
-    })
+.then(res=>res.json())
 
 
-    .then(function(resultado){
+.then(resultado=>{
 
 
-
-        if(resultado.sucesso){
-
-
-            window.open(
-
-                resultado.url,
-
-                "_blank"
-
-            );
+    if(resultado.sucesso){
 
 
-        }
-
-        else{
+        window.open(resultado.url,"_blank");
 
 
-            Swal.fire({
+    }
 
 
-                icon:"error",
+});
 
 
-                title:"Erro",
-
-
-                text:resultado.msg
-
-
-            });
-
-
-        }
+}
 
 
 
-    })
-
-    .catch(function(){
 
 
 
-        Swal.fire({
-
-
-            icon:"error",
-
-            title:"Erro",
-
-            text:"Não foi possível abrir o álbum."
-
-
-        });
 
 
 
-    });
+function limparCampos(limparNome){
+
+
+
+inputCamera.value="";
+
+
+inputGaleria.value="";
+
+
+preview.src="";
+
+
+previewContainer.style.display="none";
+
+
+
+if(limparNome){
+
+
+    nomeInput.value="";
+
+
+}
 
 
 
@@ -595,19 +608,14 @@ function abrirAlbum(){
 
 
 
-function limparTela(){
+
+function voltarInicio(){
 
 
-    inputCamera.value="";
+cameraScreen.style.display="none";
 
 
-    inputGaleria.value="";
-
-
-    preview.src="";
-
-
-    previewContainer.style.display="none";
+welcomeScreen.style.display="block";
 
 
 }

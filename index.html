@@ -11,7 +11,6 @@
 
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 
@@ -26,7 +25,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
 </head>
 
 
@@ -36,85 +34,91 @@
 <div class="camera-body">
 
 
-    <div class="camera-flash-bar">
 
+<!-- =========================
+     TELA DE BOAS VINDAS
+========================= -->
 
-        <div class="viewfinder-lens"></div>
 
+<section id="welcome-screen">
 
-        <div class="flash-bulb">
 
-            <i class="fa-solid fa-bolt"></i>
+<div class="welcome-content">
 
-        </div>
 
+<div class="logo-container">
 
-    </div>
 
+<img
 
+src="brasao.png"
 
+class="logo-evento"
 
+alt="Brasão do evento"
 
-    <div class="card">
 
+>
 
 
-        <div class="badge-container">
+</div>
 
-            <i class="fa-solid fa-crown crown-icon"></i>
 
-        </div>
 
+<i class="fa-solid fa-crown crown-icon"></i>
 
 
 
-        <h1>Baile Real</h1>
+<h1>
 
+Baile Real
 
-        <h2>80 Anos Rainha Ilda</h2>
+</h1>
 
 
+<h2>
 
+80 Anos Rainha Ilda
 
+</h2>
 
-        <p class="subtitle">
 
-            Sua câmera descartável digital da festa.
 
-            Tire fotos, divirta-se e eternize este momento conosco!
 
-        </p>
+<p class="welcome-text">
 
+Bem-vindo a esta celebração especial.
 
+<br><br>
 
+Ajude a guardar as melhores lembranças desta noite através do seu olhar.
 
+</p>
 
-        <div class="input-group">
 
 
-            <label for="nome">
 
-                <i class="fa-solid fa-user"></i>
+<button
 
-                Identifique-se (Opcional)
+id="entrar-btn"
 
-            </label>
+class="btn-style btn-view-album"
 
+>
 
+<i class="fa-solid fa-camera"></i>
 
+Entrar na Festa
 
-            <input
 
-                id="nome"
+</button>
 
-                type="text"
 
-                placeholder="Digite seu nome ou família"
 
-            >
+</div>
 
 
-        </div>
+</section>
 
 
 
@@ -122,82 +126,87 @@
 
 
 
-        <div id="preview-container" style="display:none;">
 
 
-            <img id="preview" alt="Prévia da foto">
+<!-- =========================
+     TELA DA CÂMERA
+========================= -->
 
 
-        </div>
 
+<section id="camera-screen" style="display:none;">
 
 
 
+<div class="camera-flash-bar">
 
 
+<div class="viewfinder-lens"></div>
 
 
-        <div class="actions-container">
+<div class="flash-bulb">
 
+<i class="fa-solid fa-bolt"></i>
 
+</div>
 
 
+</div>
 
-            <label class="btn-style btn-camera">
 
 
-                <i class="fa-solid fa-camera-retro"></i>
 
 
-                Tirar Foto
 
 
-                <input
+<div class="card">
 
-                    id="input-camera"
 
-                    type="file"
 
-                    accept="image/*"
+<h1>
 
-                    capture="environment"
+Baile Real
 
-                >
+</h1>
 
 
-            </label>
 
+<h2>
 
+80 Anos Rainha Ilda
 
+</h2>
 
 
 
 
 
 
-            <label class="btn-style btn-gallery">
+<div class="instructions-box">
 
 
-                <i class="fa-solid fa-images"></i>
+<h3>
 
+📸 Como funciona?
 
-                Escolher da Galeria
+</h3>
 
 
+<p>
 
-                <input
+1. Tire uma foto ou escolha uma imagem da galeria.<br><br>
 
-                    id="input-galeria"
+2. Confira a prévia antes do envio.<br><br>
 
-                    type="file"
+3. O nome é opcional: você pode se identificar ou enviar anonimamente.<br><br>
 
-                    accept="image/*"
+4. Sua foto será adicionada ao álbum da festa.
 
-                >
 
+</p>
 
 
-            </label>
+</div>
 
 
 
@@ -206,34 +215,36 @@
 
 
 
-            <button
 
-                id="btnAlbum"
+<div class="input-group">
 
-                class="btn-style btn-view-album"
 
-                type="button"
+<label for="nome">
 
-            >
 
+<i class="fa-solid fa-user"></i>
 
-                <i class="fa-solid fa-photo-film"></i>
 
+Nome (opcional)
 
-                Ver Álbum de Fotos
 
+</label>
 
 
-            </button>
 
+<input
 
+id="nome"
 
+type="text"
 
+placeholder="Digite seu nome ou família"
 
 
-        </div>
+>
 
 
+</div>
 
 
 
@@ -241,20 +252,116 @@
 
 
 
-        <div class="footer-note">
 
 
-            ✨ Cada clique vai direto para o álbum da Rainha Ilda ✨
+<div id="preview-container" style="display:none;">
 
 
-        </div>
+<p class="preview-title">
 
+Pré-visualização
 
+</p>
 
 
+<img id="preview">
 
 
-    </div>
+</div>
+
+
+
+
+
+
+
+<div class="actions-container">
+
+
+
+
+
+<label class="btn-style btn-camera">
+
+
+<i class="fa-solid fa-camera-retro"></i>
+
+
+Tirar Foto
+
+
+
+<input
+
+id="input-camera"
+
+type="file"
+
+accept="image/*"
+
+capture="environment"
+
+
+>
+
+
+</label>
+
+
+
+
+
+
+<label class="btn-style btn-gallery">
+
+
+<i class="fa-solid fa-images"></i>
+
+
+Escolher da Galeria
+
+
+
+<input
+
+id="input-galeria"
+
+type="file"
+
+accept="image/*"
+
+
+>
+
+
+</label>
+
+
+
+
+
+
+
+
+<button
+
+id="btnAlbum"
+
+class="btn-style btn-view-album"
+
+
+>
+
+
+<i class="fa-solid fa-photo-film"></i>
+
+
+Ver Álbum
+
+
+</button>
+
+
 
 
 
@@ -267,10 +374,37 @@
 
 
 
+
+<div class="footer-note">
+
+
+✨ Cada foto ajuda a contar a história desta noite ✨
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+</div>
+
+
+
+
 <script src="script.js"></script>
 
 
 </body>
-
 
 </html>
